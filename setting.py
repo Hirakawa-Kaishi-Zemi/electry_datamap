@@ -1,12 +1,9 @@
-from dash import Dash, html, dcc
-import plotly.express as px
-import dash_bootstrap_components as dbc
-
-import pandas as pd
-import numpy as np
-from datetime import datetime
-from japanmap import picture
 import itertools
+from datetime import datetime
+
+import dash_bootstrap_components as dbc
+import pandas as pd
+from dash import html, dcc
 
 drop_down = ['1day', '1month']
 if drop_down == '1day':

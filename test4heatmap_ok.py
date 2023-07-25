@@ -1,6 +1,4 @@
 import itertools
-from japanmap import picture
-import itertools
 from datetime import datetime
 
 import dash
