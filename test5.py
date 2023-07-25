@@ -1,22 +1,20 @@
-import plotly.figure_factory as ff
 import plotly.graph_objects as go
 import itertools
-import japanize_matplotlib
-from japanmap import picture
-import matplotlib.pyplot as plt
-from dash import Dash, html, dcc
+from datetime import datetime
+
 import dash
-import plotly.express as px
-from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
 import folium
-from folium.features import CustomIcon
-from PIL import Image, ImageDraw, ImageFilter
-import pandas as pd
-import os
-import numpy as np
-from datetime import datetime
 import matplotlib
+import matplotlib.pyplot as plt
+import pandas as pd
+import plotly.graph_objects as go
+from PIL import Image
+from dash import html, dcc
+from dash.dependencies import Input, Output, State
+from folium.features import CustomIcon
+from japanmap import picture
+
 matplotlib.use('agg')
 
 # 電力データ
@@ -34,7 +32,6 @@ df3 = pd.read_csv("csv/1day_kwh.csv")
 markp = []
 markp = df3['DATE']
 markp_d = {i: markp[i] for i in range(0, 1000, 166)}
-
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.VAPOR])
 # app = Dash(__name__)
@@ -78,11 +75,10 @@ app.layout = html.Div([
                         ])
                         ]),
 
-
                     dbc.Col(
                         [html.Div([
                             html.P('Select a start and end date',
-                                   style={'margin-top': '16px', 'margin-bottom': '4px'},),
+                                   style={'margin-top': '16px', 'margin-bottom': '4px'}, ),
                             dcc.DatePickerRange(id='date',
                                                 min_date_allowed=datetime(
                                                     2020, 1, 1),
@@ -103,7 +99,7 @@ app.layout = html.Div([
                                 html.Label("Time Period",
                                            style={'margin-top': '8px',
                                                   'margin-bottom': '4px'},
-                                   className='font-weight-bold'),
+                                           className='font-weight-bold'),
                                 dcc.RangeSlider(id='slider',
                                                 marks=markp_d,
                                                 min=0,
@@ -192,11 +188,10 @@ app.layout = html.Div([
                         ])
                         ]),
 
-
                     dbc.Col(
                         [html.Div([
                             html.P('Select a start and end date',
-                                   style={'margin-top': '16px', 'margin-bottom': '4px'},),
+                                   style={'margin-top': '16px', 'margin-bottom': '4px'}, ),
                             dcc.DatePickerRange(id='date2',
                                                 min_date_allowed=datetime(
                                                     2019, 1, 1),
@@ -232,7 +227,7 @@ app.layout = html.Div([
 
 
 # prevent_initial_call=True
-@ app.callback(Output('tabs-example-content', 'children'), Input('tabs-example', 'value'),)
+@app.callback(Output('tabs-example-content', 'children'), Input('tabs-example', 'value'), )
 def render_content(tab):
     if tab == 'tab-1':
         content = html.P('                       ')
@@ -240,7 +235,7 @@ def render_content(tab):
 
             dbc.Row(
                 [
-                    dbc.Col(content,  className='bg-dark')
+                    dbc.Col(content, className='bg-dark')
                 ]),
         ], fluid=True)
         # html.H1(children='折れ線グラフとかとか表示する')
@@ -278,7 +273,7 @@ def render_content(tab):
 
             dbc.Row(
                 [
-                    dbc.Col(content,  className='bg-dark')
+                    dbc.Col(content, className='bg-dark')
                 ]),
         ], fluid=True)
 
@@ -290,7 +285,7 @@ def render_content(tab):
             html.Div([
                 # html.Img(src=app.get_asset_url("colormap.png"),alt='japan',style={'width':'50%','height':'50'}),
                 html.Img(src=app.get_asset_url("colormap.png"),
-                     alt='japan', style={'display': 'inline-block'}),
+                         alt='japan', style={'display': 'inline-block'}),
                 #  html.Div(html.P('北海道電力'),style={'display': 'inline-block', 'height': '50%', 'width': '50%'}),
 
                 html.Div([
@@ -347,60 +342,57 @@ def render_content(tab):
                         ])], style={'padding': '5%'})
             ], style={'display': 'flex'}),
 
-
-
-
             html.Div([html.P(
                 html.Details([html.Summary('でんき予報ってなに？'),
-                              'でんき予報は、日本の電力会社が提供する電力需給状況の予測データのことである。電力不足が懸念される時期に、ピーク時の供給力と需要予測値を知らせて需給見通しを予報する。', html.Br(),
+                              'でんき予報は、日本の電力会社が提供する電力需給状況の予測データのことである。電力不足が懸念される時期に、ピーク時の供給力と需要予測値を知らせて需給見通しを予報する。',
+                              html.Br(),
                               '日々の電気の使用状況や各社の供給力の実績についてわかりやすく伝えることを目的にしている。'])),
 
-                      html.Details([html.Summary('使用したデータについて'),
-                                    '今回のダッシュボード作成で扱ったデータはでんき予報の使用電力実績を集計したものである。また、それぞれ各社から同じように使用電力を収集し、3年分のデータとして集計を行った。', html.Br(),
-                                    '今後もデータの更新を行っていき、日々新しいデータの統計が行えるようにしていく。']),
+                html.Details([html.Summary('使用したデータについて'),
+                              '今回のダッシュボード作成で扱ったデータはでんき予報の使用電力実績を集計したものである。また、それぞれ各社から同じように使用電力を収集し、3年分のデータとして集計を行った。',
+                              html.Br(),
+                              '今後もデータの更新を行っていき、日々新しいデータの統計が行えるようにしていく。']),
 
-                      html.Details([html.Summary('データの更新状況'),
-                                    '2022/11/16現在の更新状況↓', html.Br(),
-                                    '2022/9/25までのデータを集計済。']),
-                      html.Details([html.Summary('電力会社のホームページ'),
-                                    '各電気会社へのリンク', html.Br(),
-                                    'クリックして詳細をチェック', html.Br(),
-                                    html.A('北海道電力', href='http://www.hepco.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://denkiyoho.hepco.co.jp/area_forecast.html'), html.Br(),
-                          html.A('東北電力', href='https://www.tohoku-epco.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://setsuden.nw.tohoku-epco.co.jp/graph.html'), html.Br(),
-                          html.A('東京電力', href='https://www.tepco.co.jp/index-j.html'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://www.tepco.co.jp/forecast/'), html.Br(),
-                          html.A('北陸電力', href='http://www.rikuden.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='http://www.rikuden.co.jp/nw/denki-yoho/index.html'), html.Br(),
-                          html.A('中部電力', href='https://www.chuden.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://powergrid.chuden.co.jp/denkiyoho/'), html.Br(),
-                          html.A('関西電力', href='https://www.kansai-td.co.jp/'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://www.kansai-td.co.jp/denkiyoho/'), html.Br(),
-                          html.A('中国電力', href='https://www.energia.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://www.energia.co.jp/nw/jukyuu/'), html.Br(),
-                          html.A('四国電力', href='https://www.yonden.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://www.yonden.co.jp/nw/denkiyoho/index.html'), html.Br(),
-                          html.A('九州電力', href='https://www.kyuden.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://www.kyuden.co.jp/td_power_usages/pc.html'), html.Br(),
-                          html.A('沖縄電力', href='http://www.okiden.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='http://www.okiden.co.jp/denki2/'), html.Br()
-                      ])])
-
-
-
-
+                html.Details([html.Summary('データの更新状況'),
+                              '2022/11/16現在の更新状況↓', html.Br(),
+                              '2022/9/25までのデータを集計済。']),
+                html.Details([html.Summary('電力会社のホームページ'),
+                              '各電気会社へのリンク', html.Br(),
+                              'クリックして詳細をチェック', html.Br(),
+                              html.A('北海道電力', href='http://www.hepco.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://denkiyoho.hepco.co.jp/area_forecast.html'), html.Br(),
+                              html.A('東北電力', href='https://www.tohoku-epco.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://setsuden.nw.tohoku-epco.co.jp/graph.html'), html.Br(),
+                              html.A('東京電力', href='https://www.tepco.co.jp/index-j.html'), '  データの取得はこちら→',
+                              html.A(
+                                  'でんき予報', href='https://www.tepco.co.jp/forecast/'), html.Br(),
+                              html.A('北陸電力', href='http://www.rikuden.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='http://www.rikuden.co.jp/nw/denki-yoho/index.html'), html.Br(),
+                              html.A('中部電力', href='https://www.chuden.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://powergrid.chuden.co.jp/denkiyoho/'), html.Br(),
+                              html.A('関西電力', href='https://www.kansai-td.co.jp/'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://www.kansai-td.co.jp/denkiyoho/'), html.Br(),
+                              html.A('中国電力', href='https://www.energia.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://www.energia.co.jp/nw/jukyuu/'), html.Br(),
+                              html.A('四国電力', href='https://www.yonden.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://www.yonden.co.jp/nw/denkiyoho/index.html'), html.Br(),
+                              html.A('九州電力', href='https://www.kyuden.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://www.kyuden.co.jp/td_power_usages/pc.html'), html.Br(),
+                              html.A('沖縄電力', href='http://www.okiden.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='http://www.okiden.co.jp/denki2/'), html.Br()
+                              ])])
 
         ])
 
 
-@ app.callback(Output('heat_map',  'children'), [Input('slider', 'value'), Input('my-button', 'n_clicks'), ], State('date', 'start_date'))
+@app.callback(Output('heat_map', 'children'), [Input('slider', 'value'), Input('my-button', 'n_clicks'), ],
+              State('date', 'start_date'))
 def heatmap(s, n_clicks, start_date):
     selected_id = dash.callback_context.triggered[0]['prop_id'].split('.')[0]
 
     if selected_id == 'my-button':
         start = start_date
-    # start = datetime.strptime(start_date[:10], '%Y-%m-%d') 時間もでる
+        # start = datetime.strptime(start_date[:10], '%Y-%m-%d') 時間もでる
 
         df = pd.read_csv("csv/1day_kwh.csv")
         df1 = pd.read_csv("csv/areamap.csv")
@@ -411,12 +403,13 @@ def heatmap(s, n_clicks, start_date):
         df1 = pd.merge(df1, gh[['エリア', '合計']], on='エリア')  # 合計を追加していく
 
         max = df1['合計'].max()
-        df1['v'] = df1['合計']/max
+        df1['v'] = df1['合計'] / max
 
         df1 = df1.set_index('都道府県')
 
         cmap = plt.get_cmap('Blues')
         norm = plt.Normalize(vmin=0, vmax=df1['v'].max())
+
         def fcol(x): return '#' + bytes(cmap(norm(x), bytes=True)[:3]).hex()
 
         plt.colorbar(plt.cm.ScalarMappable(norm, cmap))
@@ -444,12 +437,13 @@ def heatmap(s, n_clicks, start_date):
         df1 = pd.merge(df1, gh[['エリア', '合計']], on='エリア')  # 合計を追加していく
 
         max = df1['合計'].max()
-        df1['v'] = df1['合計']/max
+        df1['v'] = df1['合計'] / max
 
         df1 = df1.set_index('都道府県')
 
         cmap = plt.get_cmap('Blues')
         norm = plt.Normalize(vmin=0, vmax=df1['v'].max())
+
         def fcol(x): return '#' + bytes(cmap(norm(x), bytes=True)[:3]).hex()
 
         plt.colorbar(plt.cm.ScalarMappable(norm, cmap))
@@ -602,13 +596,13 @@ def linegraph(n_clicks, s, corr_pick, value, start_date, end_date):
 '''
 
 
-@ app.callback(Output('linegraph', 'figure'),
-               [Input('slider', 'value'), Input('my-button', 'n_clicks'),],
-               [State('my-corr-picker', 'value'),
+@app.callback(Output('linegraph', 'figure'),
+              [Input('slider', 'value'), Input('my-button', 'n_clicks'), ],
+              [State('my-corr-picker', 'value'),
                State('my-cat-picker', 'value'),
-               State('date', 'start_date'),State('date', 'end_date')
-                ])
-def linegraph(s,n_clicks, corr_pick, value, start_date, end_date):
+               State('date', 'start_date'), State('date', 'end_date')
+               ])
+def linegraph(s, n_clicks, corr_pick, value, start_date, end_date):
     selected_id = dash.callback_context.triggered[0]['prop_id'].split('.')[0]
 
     drop_down = value
@@ -623,12 +617,12 @@ def linegraph(s,n_clicks, corr_pick, value, start_date, end_date):
         # + df['TIME'].astype(str))
         df['DATETIME'] = pd.to_datetime(df['DATETIME'].astype(str))
 
-    #df['DATETIME'] = pd.to_datetime(df['DATE'].astype(str))
+    # df['DATETIME'] = pd.to_datetime(df['DATE'].astype(str))
 
     if selected_id == 'slider':
         date = pd.to_datetime(markp[s].astype(str))
         gh = df[(df['DATETIME'] >= date[s[0]]) & (
-        df['DATETIME'] <= date[s[1]])]  # 表示する期間のみ抽出
+                df['DATETIME'] <= date[s[1]])]  # 表示する期間のみ抽出
         start = markp[s[0]]
         end = markp[s[1]]
 
@@ -636,14 +630,13 @@ def linegraph(s,n_clicks, corr_pick, value, start_date, end_date):
         start = start_date
         end = end_date
         gh = df[(df['DATETIME'] >= start) & (
-            df['DATETIME'] <= end)] 
+                df['DATETIME'] <= end)]
 
     strPC = [str(num) for num in corr_pick]
 
     xaxis = go.layout.XAxis(title='日付')
     yaxis = go.layout.YAxis(title='万kw')
 
-    
     fig = go.Figure(layout=go.Layout(
         title="Power Line Plot  "f"期間: {start} - {end}", xaxis=xaxis, yaxis=yaxis))
 
@@ -682,10 +675,10 @@ def linegraph(s,n_clicks, corr_pick, value, start_date, end_date):
 
 
 @app.callback(Output('japan_marker', 'children'),
-             [Input('slider', 'value'), Input('my-button', 'n_clicks'),],
+              [Input('slider', 'value'), Input('my-button', 'n_clicks'), ],
               State('date', 'start_date'),
               State('date', 'end_date'))
-def japanmarker(s,n_clicks, start_date, end_date):
+def japanmarker(s, n_clicks, start_date, end_date):
     selected_id = dash.callback_context.triggered[0]['prop_id'].split('.')[0]
 
     df = pd.read_csv("csv/1day_kwh.csv")
@@ -694,7 +687,7 @@ def japanmarker(s,n_clicks, start_date, end_date):
     if selected_id == 'slider':
         date = pd.to_datetime(markp[s].astype(str))
         gh = df[(df['DATETIME'] >= date[s[0]]) & (
-        df['DATETIME'] <= date[s[1]])]  # 表示する期間のみ抽出
+                df['DATETIME'] <= date[s[1]])]  # 表示する期間のみ抽出
         start = markp[s[0]]
         end = markp[s[1]]
 
@@ -702,9 +695,8 @@ def japanmarker(s,n_clicks, start_date, end_date):
         start = start_date
         end = end_date
         gh = df[(df['DATETIME'] >= start) & (
-            df['DATETIME'] <= end)]
-    
-    
+                df['DATETIME'] <= end)]
+
     map = folium.Map([36.95538513720449, 138.87388736292712],
                      tiles="OpenStreetMap", zoom_start=5.45)
 
@@ -719,7 +711,7 @@ def japanmarker(s,n_clicks, start_date, end_date):
             icon_image="/Users/mie.tooyama/web/images/down.png", icon_size=(55, 65), icon_anchor=(30, 30),
             popup_anchor=(3, 3))
         folium.Marker(location=[
-                      35.670129705913446, 139.75842700498842], icon=icon, popup=popup).add_to(map)
+            35.670129705913446, 139.75842700498842], icon=icon, popup=popup).add_to(map)
     else:
         comp = e1 - s1
         popup = folium.Popup(f"{comp}万kw増加", max_width=300)
@@ -727,7 +719,7 @@ def japanmarker(s,n_clicks, start_date, end_date):
             icon_image="/Users/mie.tooyama/web/images/up.png", icon_size=(55, 65), icon_anchor=(30, 30),
             popup_anchor=(3, 3))
         folium.Marker(location=[
-                      35.670129705913446, 139.75842700498842], icon=icon, popup=popup).add_to(map)
+            35.670129705913446, 139.75842700498842], icon=icon, popup=popup).add_to(map)
 
     # 関西電力
     dfs2 = gh[gh['エリア'] == 'kansai']
@@ -740,7 +732,7 @@ def japanmarker(s,n_clicks, start_date, end_date):
             icon_image="/Users/mie.tooyama/web/images/down.png", icon_size=(55, 65), icon_anchor=(30, 30),
             popup_anchor=(3, 3))
         folium.Marker(location=[
-                      34.69252759139264, 135.49243297974868], icon=icon, popup=popup).add_to(map)
+            34.69252759139264, 135.49243297974868], icon=icon, popup=popup).add_to(map)
     else:
         comp_up = e2 - s2
         popup = folium.Popup(f"{comp_up}万kw増加", max_width=300)
@@ -748,7 +740,7 @@ def japanmarker(s,n_clicks, start_date, end_date):
             icon_image="/Users/mie.tooyama/web/images/up.png", icon_size=(55, 65), icon_anchor=(30, 30),
             popup_anchor=(3, 3))
         folium.Marker(location=[
-                      34.69252759139264, 135.49243297974868], icon=icon, popup=popup).add_to(map)
+            34.69252759139264, 135.49243297974868], icon=icon, popup=popup).add_to(map)
 
     # 中部電力
     dfs3 = gh[gh['エリア'] == 'chubu']
@@ -761,7 +753,7 @@ def japanmarker(s,n_clicks, start_date, end_date):
             icon_image="/Users/mie.tooyama/web/images/down.png", icon_size=(55, 65), icon_anchor=(30, 30),
             popup_anchor=(3, 3))
         folium.Marker(location=[
-                      35.17155442553177, 136.91379246511167], icon=icon, popup=popup).add_to(map)
+            35.17155442553177, 136.91379246511167], icon=icon, popup=popup).add_to(map)
     else:
         comp_up = e3 - s3
         popup = folium.Popup(f"{comp_up}万kw増加", max_width=300)
@@ -769,7 +761,7 @@ def japanmarker(s,n_clicks, start_date, end_date):
             icon_image="/Users/mie.tooyama/web/images/up.png", icon_size=(55, 65), icon_anchor=(30, 30),
             popup_anchor=(3, 3))
         folium.Marker(location=[
-                      35.17155442553177, 136.91379246511167], icon=icon, popup=popup).add_to(map)
+            35.17155442553177, 136.91379246511167], icon=icon, popup=popup).add_to(map)
 
     # 東北電力
     dfs4 = gh[gh['エリア'] == 'tohoku']
@@ -782,7 +774,7 @@ def japanmarker(s,n_clicks, start_date, end_date):
             icon_image="/Users/mie.tooyama/web/images/down.png", icon_size=(55, 65), icon_anchor=(30, 30),
             popup_anchor=(3, 3))
         folium.Marker(location=[
-                      38.298699791215576, 140.87768450198496], icon=icon, popup=popup).add_to(map)
+            38.298699791215576, 140.87768450198496], icon=icon, popup=popup).add_to(map)
     else:
         comp_up = e4 - s4
         popup = folium.Popup(f"{comp_up}万kw増加", max_width=300)
@@ -790,7 +782,7 @@ def japanmarker(s,n_clicks, start_date, end_date):
             icon_image="/Users/mie.tooyama/web/images/up.png", icon_size=(55, 65), icon_anchor=(30, 30),
             popup_anchor=(3, 3))
         folium.Marker(location=[
-                      38.298699791215576, 140.87768450198496], icon=icon, popup=popup).add_to(map)
+            38.298699791215576, 140.87768450198496], icon=icon, popup=popup).add_to(map)
 
     # 中国電力
     dfs5 = gh[gh['エリア'] == 'chugoku']
@@ -803,7 +795,7 @@ def japanmarker(s,n_clicks, start_date, end_date):
             icon_image="/Users/mie.tooyama/web/images/down.png", icon_size=(55, 65), icon_anchor=(30, 30),
             popup_anchor=(3, 3))
         folium.Marker(location=[
-                      34.388644834151, 132.45569865610997], icon=icon, popup=popup).add_to(map)
+            34.388644834151, 132.45569865610997], icon=icon, popup=popup).add_to(map)
     else:
         comp_up = e5 - s5
         popup = folium.Popup(f"{comp_up}万kw増加", max_width=300)
@@ -811,13 +803,13 @@ def japanmarker(s,n_clicks, start_date, end_date):
             icon_image="/Users/mie.tooyama/web/images/up.png", icon_size=(55, 65), icon_anchor=(30, 30),
             popup_anchor=(3, 3))
         folium.Marker(location=[
-                      34.388644834151, 132.45569865610997], icon=icon, popup=popup).add_to(map)
+            34.388644834151, 132.45569865610997], icon=icon, popup=popup).add_to(map)
 
     map.save('compmap.html')
     new = 'compmap.html'
     return html.Iframe(srcDoc=open(new, 'r').read(), width='100%', height='550')
 
 
-#raise dash.exceptions.PreventUpdate
+# raise dash.exceptions.PreventUpdate
 if __name__ == '__main__':
     app.run_server(debug=False)

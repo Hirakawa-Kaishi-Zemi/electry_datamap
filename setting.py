@@ -1,13 +1,10 @@
 from dash import Dash, html, dcc
-import dash
 import plotly.express as px
-from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 
 import pandas as pd
 import numpy as np
 from datetime import datetime
-import matplotlib.pyplot as plt
 from japanmap import picture
 import itertools
 
@@ -22,89 +19,84 @@ company = [k for k, i in itertools.groupby(df['エリア'])]
 
 def setting():
     sidebar = html.Div([
-            dbc.Row(
-                [
-                    html.H5('Settings',
-                            style={'margin-top': '10px', 'margin-left': '15px'})
+        dbc.Row(
+            [
+                html.H5('Settings',
+                        style={'margin-top': '10px', 'margin-left': '15px'})
 
-                ], style={"height": "5vh"}, className='bg-light text-white font-italic'
-            ),
-            dbc.Row(
-                [
-                    dbc.Col(
-                        [html.Div([
-                            html.P('Select a period of time',
-                                   style={'margin-top': '8px',
-                                          'margin-bottom': '4px'},
-                                   className='font-weight-bold'),
-                            dcc.Dropdown(id='my-cat-picker', multi=False, value='cat0',
-                                         options=[{'label': x, 'value': x}
-                                                  for x in drop_down],
-                                         style={'width': '120px'}
-                                         ),
-                            html.P('Select The companies',
-                                   style={'margin-top': '16px',
-                                          'margin-bottom': '4px'},
-                                   className='font-weight-bold'),
-                            dcc.Dropdown(id='my-corr-picker', multi=True,
-                                         value=company,
-                                         options=[{'label': x, 'value': x}
-                                                  for x in company],
-                                         style={'width': '320px'}
-                                         )
-
-                        ])
-                        ]),
-
-
-                    dbc.Col(
-                        [html.Div([
-                            html.P('Select a start and end date',
-                                   style={'margin-top': '16px', 'margin-bottom': '4px'},),
-                            dcc.DatePickerRange(id='my_date_picker',
-                                                min_date_allowed=datetime(
-                                                    2019, 1, 1),
-                                                max_date_allowed=datetime.today(),
-                                                start_date=datetime(
-                                                    2022, 1, 1),
-                                                end_date=datetime.today()
-                                                ),
-
-
-
-
-                            html.P(
-                                html.Button(id='my-button', n_clicks=0, children='apply',
-                                            style={'margin-top': '16px'},
-                                            className='bg-dark text-white'
-                                            ),
-                            )
-                        ]),
-                            # className='bg-secondary text-white'
-
-                        ], style={"height": "50vh"}
-                    )
-                ])
-
-
-        ])
-    content = html.Div([dbc.Row(
+            ], style={"height": "5vh"}, className='bg-light text-white font-italic'
+        ),
+        dbc.Row(
             [
                 dbc.Col(
-                    [
-                        html.P('arrow map'),
-                    ],
-                    # className='bg-white'
-                ),
+                    [html.Div([
+                        html.P('Select a period of time',
+                               style={'margin-top': '8px',
+                                      'margin-bottom': '4px'},
+                               className='font-weight-bold'),
+                        dcc.Dropdown(id='my-cat-picker', multi=False, value='cat0',
+                                     options=[{'label': x, 'value': x}
+                                              for x in drop_down],
+                                     style={'width': '120px'}
+                                     ),
+                        html.P('Select The companies',
+                               style={'margin-top': '16px',
+                                      'margin-bottom': '4px'},
+                               className='font-weight-bold'),
+                        dcc.Dropdown(id='my-corr-picker', multi=True,
+                                     value=company,
+                                     options=[{'label': x, 'value': x}
+                                              for x in company],
+                                     style={'width': '320px'}
+                                     )
+
+                    ])
+                    ]),
+
                 dbc.Col(
-                    [
-                        html.P('heatmap')
-                    ],
-                    # className='bg-dark text-white'
+                    [html.Div([
+                        html.P('Select a start and end date',
+                               style={'margin-top': '16px', 'margin-bottom': '4px'}, ),
+                        dcc.DatePickerRange(id='my_date_picker',
+                                            min_date_allowed=datetime(
+                                                2019, 1, 1),
+                                            max_date_allowed=datetime.today(),
+                                            start_date=datetime(
+                                                2022, 1, 1),
+                                            end_date=datetime.today()
+                                            ),
+
+                        html.P(
+                            html.Button(id='my-button', n_clicks=0, children='apply',
+                                        style={'margin-top': '16px'},
+                                        className='bg-dark text-white'
+                                        ),
+                        )
+                    ]),
+                        # className='bg-secondary text-white'
+
+                    ], style={"height": "50vh"}
                 )
-            ],
-            style={"height": "50vh"}),
-            dbc.Row(
+            ])
+
+    ])
+    content = html.Div([dbc.Row(
+        [
+            dbc.Col(
+                [
+                    html.P('arrow map'),
+                ],
+                # className='bg-white'
+            ),
+            dbc.Col(
+                [
+                    html.P('heatmap')
+                ],
+                # className='bg-dark text-white'
+            )
+        ],
+        style={"height": "50vh"}),
+        dbc.Row(
             [
                 dbc.Col(
                     [
@@ -117,16 +109,15 @@ def setting():
         )])
 
     return dbc.Container([
-            dbc.Row(
-                [
-                    dbc.Col(sidebar,  className='bg-primary')
+        dbc.Row(
+            [
+                dbc.Col(sidebar, className='bg-primary')
 
-                ], style={"height": "35vh"}),
-            dbc.Row(
-              [
-                   dbc.Col(content,  className='bg-dark')
-             ]), 
-                 ], fluid=True)
+            ], style={"height": "35vh"}),
+        dbc.Row(
+            [
+                dbc.Col(content, className='bg-dark')
+            ]),
+    ], fluid=True)
 
-        # html.H1(children='折れ線グラフとかとか表示する')
-
+    # html.H1(children='折れ線グラフとかとか表示する')

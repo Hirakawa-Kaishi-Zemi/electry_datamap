@@ -1,19 +1,17 @@
-import plotly.figure_factory as ff
-import plotly.graph_objects as go
 import itertools
-import japanize_matplotlib
 from japanmap import picture
-import matplotlib.pyplot as plt
-from dash import Dash, html, dcc
-import dash
-import plotly.express as px
-from dash.dependencies import Input, Output, State
-import dash_bootstrap_components as dbc
-
-import pandas as pd
-import numpy as np
+import itertools
 from datetime import datetime
+
+import dash
+import dash_bootstrap_components as dbc
 import matplotlib
+import matplotlib.pyplot as plt
+import pandas as pd
+from dash import html, dcc
+from dash.dependencies import Input, Output, State
+from japanmap import picture
+
 matplotlib.use('agg')
 
 # 電力データ
@@ -26,7 +24,6 @@ else:
     df = pd.read_csv("csv/1month_kwh.csv")
 
 company = [k for k, i in itertools.groupby(df['エリア'])]
-
 
 app = dash.Dash(external_stylesheets=[dbc.themes.VAPOR])
 # app = Dash(__name__)
@@ -70,17 +67,16 @@ app.layout = html.Div([
                         ])
                         ]),
 
-
                     dbc.Col(
                         [html.Div([
                             html.P('Select a start and end date',
-                                   style={'margin-top': '16px', 'margin-bottom': '4px'},),
+                                   style={'margin-top': '16px', 'margin-bottom': '4px'}, ),
                             dcc.DatePickerRange(id='date',
                                                 min_date_allowed=datetime(
                                                     2019, 1, 1),
-                                                max_date_allowed=datetime(2022,9,25),
+                                                max_date_allowed=datetime(2022, 9, 25),
                                                 start_date=datetime(2022, 1, 1),
-                                                end_date= datetime(2022,9,25)
+                                                end_date=datetime(2022, 9, 25)
                                                 ),
 
                             html.P(
@@ -97,7 +93,7 @@ app.layout = html.Div([
                 ], className='bg-primary')
 
         ])
-        ],label='dshboard', value='tab-1'),
+        ], label='dshboard', value='tab-1'),
         dcc.Tab([html.Div([
             dbc.Row(
                 [
@@ -116,7 +112,7 @@ app.layout = html.Div([
                                    className='font-weight-bold'),
                             dcc.Dropdown(id='my-cat-picker2', multi=False, value='1day',
                                          options=[{'label': x, 'value': x}
-                                                 for x in drop_down],
+                                                  for x in drop_down],
                                          style={'width': '120px'}
                                          ),
                             html.P('Select The companies',
@@ -133,17 +129,16 @@ app.layout = html.Div([
                         ])
                         ]),
 
-
                     dbc.Col(
                         [html.Div([
                             html.P('Select a start and end date',
-                                   style={'margin-top': '16px', 'margin-bottom': '4px'},),
+                                   style={'margin-top': '16px', 'margin-bottom': '4px'}, ),
                             dcc.DatePickerRange(id='date2',
                                                 min_date_allowed=datetime(
                                                     2019, 1, 1),
-                                                max_date_allowed=datetime(2022,9,25),
+                                                max_date_allowed=datetime(2022, 9, 25),
                                                 start_date=datetime(2022, 1, 1),
-                                                end_date= datetime(2022,9,25)
+                                                end_date=datetime(2022, 9, 25)
                                                 ),
 
                             html.P(
@@ -160,7 +155,7 @@ app.layout = html.Div([
                 ], className='bg-primary')
 
         ])
-        ],label='detail', value='tab-2'),
+        ], label='detail', value='tab-2'),
         dcc.Tab(label='electric company', value='tab-3')
 
     ]),
@@ -206,11 +201,10 @@ def setting():
                     ])
                     ]),
 
-
                 dbc.Col(
                     [html.Div([
                         html.P('Select a start and end date',
-                               style={'margin-top': '16px', 'margin-bottom': '4px'},),
+                               style={'margin-top': '16px', 'margin-bottom': '4px'}, ),
                         dcc.DatePickerRange(id='date',
                                             min_date_allowed=datetime(
                                                 2019, 1, 1),
@@ -233,20 +227,18 @@ def setting():
                 )
             ])
 
-
     ])
 
     return dbc.Container([
         dbc.Row(
             [
-                dbc.Col(sidebar,  className='bg-primary')
+                dbc.Col(sidebar, className='bg-primary')
 
             ], style={"height": "35vh"}),
     ], fluid=True)
 
 
 @app.callback(Output('tabs-example-content', 'children'), Input('tabs-example', 'value'))
-
 def render_content(tab):
     if tab == 'tab-1':
         content = html.Div([
@@ -284,9 +276,9 @@ def render_content(tab):
 
             dbc.Row(
                 [
-                    dbc.Col(content,  className='bg-dark')
+                    dbc.Col(content, className='bg-dark')
                 ]),
-        ], fluid=True)#, heatmap()
+        ], fluid=True)  # , heatmap()
 
         # html.H1(children='折れ線グラフとかとか表示する')
 
@@ -323,7 +315,7 @@ def render_content(tab):
 
             dbc.Row(
                 [
-                    dbc.Col(content,  className='bg-dark')
+                    dbc.Col(content, className='bg-dark')
                 ]),
         ], fluid=True)
 
@@ -335,7 +327,7 @@ def render_content(tab):
             html.Div([
                 # html.Img(src=app.get_asset_url("colormap.png"),alt='japan',style={'width':'50%','height':'50'}),
                 html.Img(src=app.get_asset_url("colormap.png"),
-                     alt='japan', style={'display': 'inline-block'}),
+                         alt='japan', style={'display': 'inline-block'}),
                 #  html.Div(html.P('北海道電力'),style={'display': 'inline-block', 'height': '50%', 'width': '50%'}),
 
                 html.Div([
@@ -392,57 +384,53 @@ def render_content(tab):
                         ])], style={'padding': '5%'})
             ], style={'display': 'flex'}),
 
-
-
-
             html.Div([html.P(
                 html.Details([html.Summary('でんき予報ってなに？'),
-                              'でんき予報は、日本の電力会社が提供する電力需給状況の予測データのことである。電力不足が懸念される時期に、ピーク時の供給力と需要予測値を知らせて需給見通しを予報する。', html.Br(),
+                              'でんき予報は、日本の電力会社が提供する電力需給状況の予測データのことである。電力不足が懸念される時期に、ピーク時の供給力と需要予測値を知らせて需給見通しを予報する。',
+                              html.Br(),
                               '日々の電気の使用状況や各社の供給力の実績についてわかりやすく伝えることを目的にしている。'])),
 
-                      html.Details([html.Summary('使用したデータについて'),
-                                    '今回のダッシュボード作成で扱ったデータはでんき予報の使用電力実績を集計したものである。また、それぞれ各社から同じように使用電力を収集し、3年分のデータとして集計を行った。', html.Br(),
-                                    '今後もデータの更新を行っていき、日々新しいデータの統計が行えるようにしていく。']),
+                html.Details([html.Summary('使用したデータについて'),
+                              '今回のダッシュボード作成で扱ったデータはでんき予報の使用電力実績を集計したものである。また、それぞれ各社から同じように使用電力を収集し、3年分のデータとして集計を行った。',
+                              html.Br(),
+                              '今後もデータの更新を行っていき、日々新しいデータの統計が行えるようにしていく。']),
 
-                      html.Details([html.Summary('データの更新状況'),
-                                    '2022/11/16現在の更新状況↓', html.Br(),
-                                    '2022/9/25までのデータを集計済。']),
-                      html.Details([html.Summary('電力会社のホームページ'),
-                                    '各電気会社へのリンク', html.Br(),
-                                    'クリックして詳細をチェック', html.Br(),
-                                    html.A('北海道電力', href='http://www.hepco.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://denkiyoho.hepco.co.jp/area_forecast.html'), html.Br(),
-                          html.A('東北電力', href='https://www.tohoku-epco.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://setsuden.nw.tohoku-epco.co.jp/graph.html'), html.Br(),
-                          html.A('東京電力', href='https://www.tepco.co.jp/index-j.html'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://www.tepco.co.jp/forecast/'), html.Br(),
-                          html.A('北陸電力', href='http://www.rikuden.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='http://www.rikuden.co.jp/nw/denki-yoho/index.html'), html.Br(),
-                          html.A('中部電力', href='https://www.chuden.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://powergrid.chuden.co.jp/denkiyoho/'), html.Br(),
-                          html.A('関西電力', href='https://www.kansai-td.co.jp/'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://www.kansai-td.co.jp/denkiyoho/'), html.Br(),
-                          html.A('中国電力', href='https://www.energia.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://www.energia.co.jp/nw/jukyuu/'), html.Br(),
-                          html.A('四国電力', href='https://www.yonden.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://www.yonden.co.jp/nw/denkiyoho/index.html'), html.Br(),
-                          html.A('九州電力', href='https://www.kyuden.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='https://www.kyuden.co.jp/td_power_usages/pc.html'), html.Br(),
-                          html.A('沖縄電力', href='http://www.okiden.co.jp'), '  データの取得はこちら→', html.A(
-                          'でんき予報', href='http://www.okiden.co.jp/denki2/'), html.Br()
-                      ])])
-
-
-
-
+                html.Details([html.Summary('データの更新状況'),
+                              '2022/11/16現在の更新状況↓', html.Br(),
+                              '2022/9/25までのデータを集計済。']),
+                html.Details([html.Summary('電力会社のホームページ'),
+                              '各電気会社へのリンク', html.Br(),
+                              'クリックして詳細をチェック', html.Br(),
+                              html.A('北海道電力', href='http://www.hepco.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://denkiyoho.hepco.co.jp/area_forecast.html'), html.Br(),
+                              html.A('東北電力', href='https://www.tohoku-epco.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://setsuden.nw.tohoku-epco.co.jp/graph.html'), html.Br(),
+                              html.A('東京電力', href='https://www.tepco.co.jp/index-j.html'), '  データの取得はこちら→',
+                              html.A(
+                                  'でんき予報', href='https://www.tepco.co.jp/forecast/'), html.Br(),
+                              html.A('北陸電力', href='http://www.rikuden.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='http://www.rikuden.co.jp/nw/denki-yoho/index.html'), html.Br(),
+                              html.A('中部電力', href='https://www.chuden.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://powergrid.chuden.co.jp/denkiyoho/'), html.Br(),
+                              html.A('関西電力', href='https://www.kansai-td.co.jp/'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://www.kansai-td.co.jp/denkiyoho/'), html.Br(),
+                              html.A('中国電力', href='https://www.energia.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://www.energia.co.jp/nw/jukyuu/'), html.Br(),
+                              html.A('四国電力', href='https://www.yonden.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://www.yonden.co.jp/nw/denkiyoho/index.html'), html.Br(),
+                              html.A('九州電力', href='https://www.kyuden.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='https://www.kyuden.co.jp/td_power_usages/pc.html'), html.Br(),
+                              html.A('沖縄電力', href='http://www.okiden.co.jp'), '  データの取得はこちら→', html.A(
+                        'でんき予報', href='http://www.okiden.co.jp/denki2/'), html.Br()
+                              ])])
 
         ])
 
-@app.callback(Output('heat_map',  'children'),Input('my-button', 'n_clicks'),State('date', 'start_date'))
 
-def heatmap(n_clicks,start_date):
+@app.callback(Output('heat_map', 'children'), Input('my-button', 'n_clicks'), State('date', 'start_date'))
+def heatmap(n_clicks, start_date):
     start = start_date
-    #start = datetime.strptime(start_date[:10], '%Y-%m-%d') 時間もでる
+    # start = datetime.strptime(start_date[:10], '%Y-%m-%d') 時間もでる
 
     df = pd.read_csv("csv/1day_kwh.csv")
     df1 = pd.read_csv("csv/areamap.csv")
@@ -453,34 +441,24 @@ def heatmap(n_clicks,start_date):
     df1 = pd.merge(df1, gh[['エリア', '合計']], on='エリア')  # 合計を追加していく
 
     max = df1['合計'].max()
-    df1['v'] = df1['合計']/max
+    df1['v'] = df1['合計'] / max
 
     df1 = df1.set_index('都道府県')
 
     cmap = plt.get_cmap('Blues')
     norm = plt.Normalize(vmin=0, vmax=df1['v'].max())
+
     def fcol(x): return '#' + bytes(cmap(norm(x), bytes=True)[:3]).hex()
 
-
     plt.colorbar(plt.cm.ScalarMappable(norm, cmap))
-    
-    #plt.cm.ScalarMappable(norm, cmap)
 
-    plt.imshow(picture(df1['v'].apply(fcol))) 
+    # plt.cm.ScalarMappable(norm, cmap)
+
+    plt.imshow(picture(df1['v'].apply(fcol)))
     plt.title('電力会社ごと1日の合計使用電力   'f"日付: {start}")
 
     plt.savefig('assets/heatmap.png')
     plt.close()
-
-
-
-    
-
-
-
-
-
-
 
 
 if __name__ == '__main__':

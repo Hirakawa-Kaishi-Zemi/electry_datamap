@@ -1,11 +1,8 @@
-import time
-import glob
-import shutil
 from pathlib import Path
+
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 ############### ダウンロード機能の追加 ###############
 # ダウンロードファイルの一時保存フォルダを作成(カレントディレクトリに「tmp」フォルダを作成)
@@ -23,7 +20,6 @@ chrome_service = Service(executable_path=driver_path)
 
 # 追加したオプションを設定してwebdriverを起動
 driver = webdriver.Chrome(service=chrome_service, options=options)
-
 
 ############### ここからWebページへのアクセス処理 ###############
 # e-Statsのcsvダウンロードページにアクセス
