@@ -30,8 +30,7 @@ drop_down = ['1day', '1month', 'Time']
 # 発電方法の選択
 drop_down2 = ['火力', '水力', '太陽光', 'バイオマス', '風力', '原子力', '地熱']
 # 日本の各電力会社
-company = [k
-           for k, i in itertools.groupby(df['エリア'])]
+company = [k for k, i in itertools.groupby(df['エリア'])]
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.VAPOR])
 # app = Dash(__name__)
