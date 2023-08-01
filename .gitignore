@@ -2,3 +2,11 @@ __pycache__/
 .DS_Store
 .vscode/
 .idea/
+venv/
+assets/
+sample.py
+samle.css
+compmap.html
+heatmap.py
+setting.py
+nihon.py
