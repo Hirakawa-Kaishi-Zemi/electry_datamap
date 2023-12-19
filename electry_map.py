@@ -18,9 +18,9 @@ from plotly.subplots import make_subplots
 
 matplotlib.use('agg')
 
-#mysqlの接続
-import sqlalchemy as sa
 
+import sqlalchemy as sa
+#mysqlの接続
 user = 'username'     # ユーザ名
 password = 'password' # パスワード
 host = 'localhost'    # ホスト名 or IP
