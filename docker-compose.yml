@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  dash-app:
+    build:
+      context: ./docker/python3.11
+    ports:
+      - "8050:8050"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+
+  db:
+    build:
+      context: ./docker/mysql
+    ports:
+      - "3306:3306"
+    environment: 
+    # TODO: 必要に応じて変更(変更後は再度ビルドすること)
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: electry_map
+      MYSQL_USER: guest
+      MYSQL_PASSWORD: password
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:

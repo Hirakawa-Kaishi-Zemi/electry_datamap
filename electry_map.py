@@ -1448,4 +1448,4 @@ def barchart(s, n_clicks,corr_pick,value,start_date):
 
 #raise dash.exceptions.PreventUpdate
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=False, host='0.0.0.0', port=8050)
