@@ -18,11 +18,30 @@ from plotly.subplots import make_subplots
 
 matplotlib.use('agg')
 
+#mysqlの接続
+import sqlalchemy as sa
+
+user = 'username'     # ユーザ名
+password = 'password' # パスワード
+host = 'localhost'    # ホスト名 or IP
+db = 'database'       # データベース
+port = 3306           # ポート
+
+url = f'mysql+pymysql://{user}:{password}@{host}:{port}/{db}?charset=utf8'
+
+# engine作成
+engine = sa.create_engine(url, echo=False)
+
+# pandasのread_sql関数にselect文とengineを指定する
+query = "select * from table"
+#df = pd.read_sql(query, con=engine)
+
+
 # 電力データ
 
-df1 = pd.read_csv("csv/1day_kwh.csv") 
+df = pd.read_csv("csv/1day_kwh.csv") 
 markp = []
-markp = df1['DATE']
+markp = df['DATE']
 markp_d = {i: markp[i] for i in range(0, 10000, 1000)}
 #統計範囲、期間の設定
 drop_down = ['1day', '1month', 'Time']
@@ -30,7 +49,7 @@ drop_down = ['1day', '1month', 'Time']
 drop_down2 = ['火力', '水力', '太陽光','バイオマス','風力','原子力','地熱']
 #日本の各電力会社
 company = [k 
-for k, i in itertools.groupby(df1['エリア'])] #####
+for k, i in itertools.groupby(df['エリア'])] #####
 
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LUMEN])
