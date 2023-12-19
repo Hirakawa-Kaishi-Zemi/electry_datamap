@@ -8,7 +8,7 @@ WORKDIR /app
 COPY ./requirements.txt /app/requirements.txt
 
 # 依存関係のインストール
-RUN pip install -U pip setuptools && pip install --no-cache-dir -r requirements.txt
+RUN python -m pip install -U pip setuptools && python -m pip install --no-cache-dir -r requirements.txt
 
 # ポートを公開
 EXPOSE 8050
