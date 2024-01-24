@@ -42,7 +42,7 @@ query = "select * from table"
 df = pd.read_csv("csv/1day_kwh.csv") 
 markp = []
 markp = df['DATE']
-markp_d = {i: markp[i] for i in range(13911, 15637, 100)}##0,1615
+markp_d = {i: markp[i] for i in range(0, 15637, 100)}##0,1615
 #統計範囲、期間の設定
 drop_down = ['1day', '1month', 'Time']
 #発電方法の選択
@@ -142,7 +142,7 @@ app.layout = html.Div([
                                 dcc.RangeSlider(id='slider',
                                                 marks=markp_d,
                                                 min=0,
-                                                max=170, ##ここの数字を変えるのが良いかも
+                                                max=1600, ##ここで日付の範囲を変更する
                                                 # 今回の入力値(初期値)
                                                 value=[10, 50],
                                                 className='font-weight-bold form-range'), ###
@@ -1448,4 +1448,4 @@ def barchart(s, n_clicks,corr_pick,value,start_date):
 
 #raise dash.exceptions.PreventUpdate
 if __name__ == '__main__':
-    app.run_server(debug=False, host='0.0.0.0', port=8050)#
+    app.run_server(debug=False)#, host='0.0.0.0', port=8050
