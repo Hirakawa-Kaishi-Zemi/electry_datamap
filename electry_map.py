@@ -15,7 +15,6 @@ from dash.dependencies import Input, Output, State
 from folium.features import CustomIcon
 from japanmap import picture
 from plotly.subplots import make_subplots
-import base64
 
 matplotlib.use('agg')
 
@@ -1323,7 +1322,7 @@ def barchart(s, n_clicks,corr_pick,value,start_date):
             title2 = markp[s[0]][5] + '月のデータ'
         else:
             title2 = markp[s[0]]
-                
+
     strPC = [str(num) for num in corr_pick]
 
 
