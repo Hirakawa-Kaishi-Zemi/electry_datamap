@@ -15,6 +15,7 @@ from dash.dependencies import Input, Output, State
 from folium.features import CustomIcon
 from japanmap import picture
 from plotly.subplots import make_subplots
+import base64
 
 matplotlib.use('agg')
 
@@ -37,7 +38,6 @@ query = "select * from table"
 #df = pd.read_sql(query, con=engine)
 
 # 電力データ
-
 df = pd.read_csv("csv/1day_kwh.csv") 
 markp = []
 markp = df['DATE']
@@ -68,7 +68,7 @@ app.layout = html.Div([
             html.H5(' この電力データマップは日本の電力会社（10社）の電力に関するデータを集め、可視化したものである。近年の電気代値上がりや気候変動による電力逼迫など、日本社会で電力に関する問題が顕著になってきた。この電力危機を脱するために、企業で何ができるだろうか。'),
             html.H5(' 電力のデータに触れ、現状を把握、分析を行い対策を講じていくことが今後必要になると考える。そのためにも、各電力会社の情報をまとめて見ることができるこの電力データマップを役立ててほしい。'),
 
-            html.Div([html.Img(src=app.get_asset_url("colormap.png"),
+            html.Div([html.Img(src=app.get_asset_url("colormap.png"),width="700px" ,height="700px",
                      alt='japan', style={'display': 'inline-block'}),
 
                 html.Div([
@@ -132,17 +132,21 @@ app.layout = html.Div([
                               '日々の電気の使用状況や各社の供給力の実績についてわかりやすく伝えることを目的にしている。'])),
 
                       html.P(html.Details([html.Summary('使用したデータについて'),
-                                    '今回のダッシュボード作成で扱ったデータはでんき予報の使用電力実績を集計したものである。また、それぞれ各社から同じように使用電力を収集し、3年分のデータとして集計を行った。', html.Br(),
-                                    '他にも発電方式別にどれくらいの量が発電されているかなど、それぞれの発電所における発電電力量も集計している。今後もデータの更新を行っていき、日々新しいデータの統計が行えるようにしていく。'])),
+                                    '今回のダッシュボード作成で扱ったデータはでんき予報の使用電力実績を集計したものである。また、それぞれ各社から同じように使用電力を収集し、5年分のデータとして集計を行った。', html.Br(),
+                                    '他にも発電方式別にどれくらいの量が発電されているかなど、それぞれの発電所における発電電力量も集計している。', html.Br(),'今後もデータの更新を行っていき、日々新しいデータの統計が行えるようにしていく。'])),
 
                       html.P(html.Details([html.Summary('使用データの公開'),
                                            'ここでは電力統計で使われている電力データをダウンロードすることが可能である。ただし、元データを加工したものであるため、元データの取得は各電力会社HPより取得してください。', html.Br(),
-                                           'csvファイル', html.Br(),
-                                           'グラフのカスタムなどは「グラフについて」より行ってください。'])),
+                                           '　　<CSVファイル>', html.Br(),
+                                           '　　　　　　・',html.A('「電力発電量_1時間ごとの集計」CSVをダウンロード',href="/csv/time_jukyu.csv",download='jukyu_time.csv' ),'　　　　　・',html.A('「電力使用量_1時間ごとの集計」CSVをダウンロード',href='/csv/time_kwh.csv',download='kwh_time.csv' ),html.Br(),
+                                           '　　　　　　・',html.A('「電力発電量_1日ごとの集計」CSVをダウンロード',href='/Users/mibo/web/csv/1day_jukyu.csv',download='jukyu_day.csv' ),'　　　　　　・',html.A('「電力使用量_1日ごとの集計」CSVをダウンロード',href='/csv/1day_kwh.csv',download='kwh_day.csv' ),html.Br(),
+                                           '　　　　　　・',html.A('「電力発電量_1月ごとの集計」CSVをダウンロード',href='/csv/1month_jukyu.csv',download='jukyu_month.csv' ),'　　　　　　・',html.A('「電力使用量_1月ごとの集計」CSVをダウンロード',href='/csv/1month_kwh.csv',download='kwh_month.csv' ),html.Br(),
+
+                                           html.Br(),'データの詳しい内容、グラフのカスタムなどは「グラフについて」より行ってください。'])),
 
                       html.P(html.Details([html.Summary('データの更新状況'),
-                                    '2022/11/16現在の更新状況↓', html.Br(),
-                                    '2022/9/25までのデータを集計済。'])),
+                                    '2024/2/2現在の更新状況↓', html.Br(),
+                                    '2023/10/31までのデータを集計済。'])),
 
                       html.P(html.Details([html.Summary('電力会社のホームページ'),
                                     '各電気会社へのリンク', html.Br(),
@@ -195,7 +199,7 @@ app.layout = html.Div([
                                                   for x in drop_down],
                                          style={'width': '120px',
                                              'left': '10px'},#,'background':'#4169e1'
-                                          className='btn btn-outline-info'#className='font-weight-bold nav-item dropdown
+                                         className='font-weight-bold nav-item dropdown' # className='btn btn-outline-info '
                                          ),
                         ])
                         ] ,style={'width': '30%'}),
@@ -227,7 +231,7 @@ app.layout = html.Div([
                                                   for x in company],
                                          #style={'width': '450px','right': '100px'  # 'color': '#8800e3','border-color': '#8800e3',#'background-color':'#9d18f5',
                                         #},
-                                         className='btn btn-outline-info'
+                                         className='font-weight-bold nav-item dropdown'
                                          ),  
                             #実行ボタン、上記３つで決定したものはこのボタンで反映される
                             
@@ -239,7 +243,7 @@ app.layout = html.Div([
                                 html.Button(id='my-button', n_clicks=0, children='apply',
                                             style={'margin-top': '20px',
                                                 'right': '15px','align':'center'},
-                                            className='btn btn-outline-success' ###
+                                            className='btn btn-outline-success btn-lg' ###
                                             ),
                             ),
                         ])
@@ -350,21 +354,17 @@ app.layout = html.Div([
                         )
             # className='bg-dark'
     ],label='電力統計', value='tab-2'),
-       
-        
-       
-       
         
         dcc.Tab([ 
                 html.Div([
                     dbc.Row(
             
-            html.H4('電力統計のグラフについて',style={'margin-top': '10px'}
-                    ), style={"margin":"0","height": "7vh"},className='bg-primary text-white font-italic'
+            html.H4('電力統計のグラフについて',style={'margin-top': '10px'}), style={"margin":"0","height": "7vh"},className='bg-primary text-white font-italic'
                     ), 
             html.Div([html.P(
                 html.Details([html.Summary('電力使用量の折れ線グラフ'),
-                              '特定の期間内での電力消費のトレンドやパターンを把握することができる。'])),
+                              '特定の期間内での電力消費のトレンドやパターンを把握することができる。',
+                              '', html.Br(),])),
 
                       html.P(html.Details([html.Summary('電力使用量の増減グラフ'),
                                     '日付期間の選択より、選択した最後の日付から最初の選択日を引いた値が示されている。数値を１つ１つ比較しなくても色と矢印のマークを使うことで、直感的に増減を見ることができる。全国の電力使用量の比較や地域の違いを把握することができる。'])),
@@ -381,10 +381,70 @@ app.layout = html.Div([
                     html.P(html.Details([html.Summary('電力需給予測のグラフ'),
                                     '発電量と需要量のバランスを視覚化することでピーク時の需要供給の調整や需要制御の重要性を把握できる。'])),
 
-            html.Div([html.H5('グラフの書き出し'),
-                     html.H5('chatGPTを使ったグラフのカスタマイズ'),
-                     html.A('vizGPTでカスタマイズ', href='https://vizgpt.ai/workspace', target='_blank')
-                     
+                    html.P(html.Details([html.Summary('詳細なデータのダウンロード'),
+                                    '概要のCSVファイルとは別に「Excel」と「CSV」で、各電力会社ごとの電力の発電量、使用量をダウンロードできる。ただし、元データを加工したものであるため、元データの取得は各電力会社HPより取得してください。',html.Br(),
+                                    '　【北海道電力】',html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1時間ごとの集計」CSVをダウンロード',href="time_kwh_data/hokkaido.csv",download='hokkaido_jukyu_time.csv',target='_blank' ),'　　　　・',html.A('「電力使用量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_date/hokkaido.csv',download='hokkaido_kwh_time.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1日ごとの集計」CSVをダウンロード',href="1day_jukyu_data/hokkaido_1day_jukyu.csv",download='hokkaido_jukyu_day.csv' ,target='_blank' ),'　　　　　・',html.A('「電力使用量_1日ごとの集計」CSVをダウンロード',href='day_kwh_data/hokkaido.csv',download='hokkaido_kwh_day.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1月ごとの集計」CSVをダウンロード',href="1time_jukyu_data/hokkaidojukyu.csv",download='hokkaido_jukyu_month.csv' ),'　　　　　・',html.A('「電力使用量_1月ごとの集計」CSVをダウンロード',href='/csv/time_kwh.csv',download='hokkaido_kwh_month.csv' ),html.Br(),
+                                           
+                                    '　【東北電力】',html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_data/tohoku.csv',download='tohoku_jukyu_time.csv' ),'　　　　・',html.A('「電力使用量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_date/tohoku.csv',download='tohoku_kwh_time.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1日ごとの集計」CSVをダウンロード',href="1day_jukyu_data/tohoku.csv",download='tohoku_jukyu_day.csv' ),'　　　　　・',html.A('「電力使用量_1日ごとの集計」CSVをダウンロード',href='day_kwh_data/tohoku.csv',download='tohoku_kwh_time.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1月ごとの集計」CSVをダウンロード',href="1time_jukyu_data/tohoku.csv",download='tohoku_jukyu_month.csv' ),'　　　　　・',html.A('「電力使用量_1月ごとの集計」CSVをダウンロード',href='day_kwh_data/tohoku.csv',download='tohoku_kwh_time.csv' ),html.Br(),
+                                           
+                                    '　【東京電力】',html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_data/tokyo.csv',download='tokyo_jukyu_time.csv' ),'　　　　・',html.A('「電力使用量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_date/tokyo.csv',download='tokyo_kwh_time.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1日ごとの集計」CSVをダウンロード',href="1day_jukyu_data/tokyo.csv",download='tokyo_jukyu_day.csv' ),'　　　　　・',html.A('「電力使用量_1日ごとの集計」CSVをダウンロード',href='day_kwh_data/tokyo.csv',download='tokyo_kwh_day.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1月ごとの集計」CSVをダウンロード',href="1time_jukyu_data/tokyo.csv",download='tokyo_jukyu_month.csv' ),'　　　　　・',html.A('「電力使用量_1月ごとの集計」CSVをダウンロード',href='month_kwh_data/tokyo.csv',download='tokyo_kwh_month.csv' ),html.Br(),
+                                           
+                                    '　【北陸電力】',html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_data/hokuriku.csv',download='hokuriku_jukyu_time.csv' ),'　　　　・',html.A('「電力使用量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_date/hokuriku.csv',download='hokuriku_kwh_time.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1日ごとの集計」CSVをダウンロード',href="1day_jukyu_data/hokuriku.csv",download='hokuriku_jukyu_day.csv' ),'　　　　　・',html.A('「電力使用量_1日ごとの集計」CSVをダウンロード',href='day_kwh_data/hokuriku.csv',download='hokuriku_kwh_day.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1月ごとの集計」CSVをダウンロード',href="1time_jukyu_data/hokuriku.csv",download='hokuriku_jukyu_month.csv' ),'　　　　　・',html.A('「電力使用量_1月ごとの集計」CSVをダウンロード',href='month_kwh_data/hokuriku.csv',download='hokuriku_kwh_month.csv' ),html.Br(),
+                                           
+                                    '　【中部電力】',html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_data/chubu.csv',download='chubu_jukyu_time.csv' ),'　　　　・',html.A('「電力使用量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_date/chubu.csv',download='chubu_kwh_time.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1日ごとの集計」CSVをダウンロード',href="1day_jukyu_data/chubu.csv",download='chubu_jukyu_day.csv' ),'　　　　　・',html.A('「電力使用量_1日ごとの集計」CSVをダウンロード',href='day_kwh_data/chubu.csv',download='chubu_kwh_day.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1月ごとの集計」CSVをダウンロード',href="1time_jukyu_data/chubu.csv",download='chubu_jukyu_month.csv' ),'　　　　　・',html.A('「電力使用量_1月ごとの集計」CSVをダウンロード',href='month_kwh_data/chubu.csv',download='chubu_kwh_month.csv' ),html.Br(),
+                                           
+                                    '　【関西電力】',html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_data/kansai.csv',download='kansai_jukyu_time.csvv' ),'　　　　・',html.A('「電力使用量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_date/kansai.csv',download='kansai_kwh_time.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1日ごとの集計」CSVをダウンロード',href="1day_jukyu_data/kansai.csv",download='kansai_jukyu_day.csv' ),'　　　　　・',html.A('「電力使用量_1日ごとの集計」CSVをダウンロード',href='day_kwh_data/kansai.csv',download='kansai_kwh_day.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1月ごとの集計」CSVをダウンロード',href="1time_jukyu_data/kansai.csv",download='kansai_jukyu_month.csv' ),'　　　　　・',html.A('「電力使用量_1月ごとの集計」CSVをダウンロード',href='month_kwh_data/kansai.csv',download='kansai_kwh_month.csv' ),html.Br(),
+                                           
+                                    '　【中国電力】',html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_data/chugoku.csv',download='chugoku_jukyu_time.csv' ),'　　　　・',html.A('「電力使用量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_date/chugoku.csv',download='chugoku_kwh_time.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1日ごとの集計」CSVをダウンロード',href="1day_jukyu_data/chugoku.csv",download='chugoku_jukyu_day.csv' ),'　　　　　・',html.A('「電力使用量_1日ごとの集計」CSVをダウンロード',href='day_kwh_data/chugoku.csv',download='chugoku_kwh_day.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1月ごとの集計」CSVをダウンロード',href="1time_jukyu_data/chugoku.csv",download='chugoku_jukyu_month.csv' ),'　　　　　・',html.A('「電力使用量_1月ごとの集計」CSVをダウンロード',href='month_kwh_data/chugoku.csv',download='chugoku_kwh_month.csv' ),html.Br(),
+                                           
+                                    '　【四国電力】',html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_data/sikoku.csv',download='sikoku_jukyu_time.csv' ),'　　　　・',html.A('「電力使用量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_date/sikoku.csv',download='sikoku_kwh_time.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1日ごとの集計」CSVをダウンロード',href="1day_jukyu_data/sikoku.csv",download='sikoku_jukyu_day.csv' ),'　　　　　・',html.A('「電力使用量_1日ごとの集計」CSVをダウンロード',href='day_kwh_data/sikoku.csv',download='sikoku_kwh_day.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1月ごとの集計」CSVをダウンロード',href="1time_jukyu_data/sikoku.csv",download='sikoku_jukyu_month.csv' ),'　　　　　・',html.A('「電力使用量_1月ごとの集計」CSVをダウンロード',href='month_kwh_data/sikoku.csv',download='sikoku_kwh_month.csv' ),html.Br(),
+                                           
+                                    '　【九州電力】',html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_data/kyushu.csv',download='kyushu_jukyu_time.csv' ),'　　　　・',html.A('「電力使用量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_date/kyushu.csv',download='kyushu_kwh_time.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1日ごとの集計」CSVをダウンロード',href="1day_jukyu_data/kyushu.csv",download='kyushu_jukyu_day.csv' ),'　　　　　・',html.A('「電力使用量_1日ごとの集計」CSVをダウンロード',href='day_kwh_data/kyushu.csv',download='kyushu_kwh_day.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1月ごとの集計」CSVをダウンロード',href="1time_jukyu_data/kyushu.csv",download='kyushu_jukyu_month.csv' ),'　　　　　・',html.A('「電力使用量_1月ごとの集計」CSVをダウンロード',href='month_kwh_data/kyushu.csv',download='kyushu_kwh_month.csv' ),html.Br(),
+                                           
+                                    '　【沖縄電力】',html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_data/okinawa.csv',download='okinawa_jukyu_time.csv' ),'　　　　・',html.A('「電力使用量_1時間ごとの集計」CSVをダウンロード',href='time_kwh_date/okinawa.csv',download='okinawa_kwh_time.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1日ごとの集計」CSVをダウンロード',href="1day_jukyu_data/okinawa.csv",download='okinawa_jukyu_day.csv' ),'　　　　　・',html.A('「電力使用量_1日ごとの集計」CSVをダウンロード',href='day_kwh_data/okinawa.csv',download='okinawa_kwh_day.csv' ),html.Br(),
+                                           '　　　　・',html.A('「電力発電量_1月ごとの集計」CSVをダウンロード',href="1time_jukyu_data/okinawa.csv",download='okinawa_jukyu_month.csv' ),'　　　　　・',html.A('「電力使用量_1月ごとの集計」CSVをダウンロード',href='month_kwh_data/okinawa.csv',download='okinawa_kwh_month.csv' ),html.Br(),
+                                           
+
+                                          html.Br(),'以下のグラフのカスタムなどで活用してください。※vizGPTはCSVのみアップロード可'
+
+                                    ])),
+
+            html.Div([
+                     html.H5('　<chatGPTを使ったグラフのカスタマイズ>'),'　　　',
+                     html.A(html.B('[vizGPTでカスタマイズ]'), href='https://vizgpt.ai/workspace', target='_blank'),html.Br(),
+                     '　vizGPTとは？',html.Br(),'→vizGPTは、GPTモデルの機能を活用してデータの可視化を作成するツールのことである。自然言語のクエリを解釈し、対応する可視化を生成することで、ユーザーがデータを理解し分析することを容易にする。',html.Br(),
+                     '以下は、VizGPTの使用方法を示すクイックビデオデモです：',html.Br(),
+                     html.Iframe(src="https://www.youtube.com/embed/a7BW0cYyzwk?list=TLGGaybGDxmkAAkwNDAyMjAyNA", width="832", height="468")
+                 #    <iframe width="832" height="468"  title="VizGPT: Make contextual data visualization with Chat Interface" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             ])
 
              ])
@@ -836,13 +896,19 @@ def piechart(s, n_clicks,corr_pick,value,start_date):
     if selected_id == 'my-button':
         start = start_date
         gh = df[(df['DATETIME'] >= start)]  # 表示する日付抽出
-        title2 = start
+        if drop_down == '1month':
+            title2 = start[6] + '月のデータ'
+        else:
+            title2 = start
     # start = datetime.strptime(start_date[:10], '%Y-%m-%d') 時間もでる
 
     if selected_id == 'slider':
         date = pd.to_datetime(markp[s].astype(str))
         gh = df[(df['DATETIME'] >= date[s[0]])]  # 表示する日付抽出
-        title2 = markp[s[0]]
+        if drop_down == '1month':
+            title2 = markp[s[0]][5] + '月のデータ'
+        else:
+            title2 = markp[s[0]]
     
     strPC = [str(num) for num in corr_pick]
 
@@ -1039,7 +1105,7 @@ def piechart(s, n_clicks,corr_pick,value,start_date):
   #  width=320,
     height=700,
     margin=dict(l=30, r=10, t=100, b=10),
-    title = "各社エリアごとの発電電力量割合  "f"日付: {title2}"
+    title = "各社エリアごとの発電電力量割合  "f" {title2}"
     )
 
     return fig
@@ -1244,14 +1310,20 @@ def barchart(s, n_clicks,corr_pick,value,start_date):
     if selected_id == 'my-button':
         start = start_date
         gh = df[(df['DATETIME'] >= start)]  # 表示する日付抽出
-        title2 = start
+        if drop_down == '1month':
+            title2 =start[6] + '月のデータ'
+        else:
+            title2 = start
     # start = datetime.strptime(start_date[:10], '%Y-%m-%d') 時間もでる
 
     if selected_id == 'slider':
         start = pd.to_datetime(markp[s].astype(str))
         gh = df[(df['DATETIME'] >= start[s[0]])]  # 表示する日付抽出
-        title2 = markp[s[0]]
-    
+        if drop_down == '1month':
+            title2 = markp[s[0]][5] + '月のデータ'
+        else:
+            title2 = markp[s[0]]
+                
     strPC = [str(num) for num in corr_pick]
 
 
@@ -1444,4 +1516,4 @@ def barchart(s, n_clicks,corr_pick,value,start_date):
 
 #raise dash.exceptions.PreventUpdate
 if __name__ == '__main__':
-    app.run_server(debug=False)#, host='0.0.0.0', port=8050
+    app.run_server(debug=False, host='0.0.0.0', port=8050)
