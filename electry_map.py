@@ -197,8 +197,8 @@ app.layout = html.Div([
                                          options=[{'label': x, 'value': x}
                                                   for x in drop_down],
                                          style={'width': '120px',
-                                             'left': '10px'},#,'background':'#4169e1'
-                                         className='font-weight-bold nav-item dropdown' # className='btn btn-outline-info '
+                                             'left': '10px'},
+                                         className='font-weight-bold nav-item dropdown' 
                                          ),
                         ])
                         ] ,style={'width': '30%'}),
@@ -228,14 +228,11 @@ app.layout = html.Div([
                                          value=company,
                                          options=[{'label': x, 'value': x}
                                                   for x in company],
-                                         #style={'width': '450px','right': '100px'  # 'color': '#8800e3','border-color': '#8800e3',#'background-color':'#9d18f5',
-                                        #},
                                          className='font-weight-bold nav-item dropdown'
                                          ),  
                             #実行ボタン、上記３つで決定したものはこのボタンで反映される
                             
-                            # className='bg-secondary text-white'
-
+                           
                         ], style={'width': '30%',"height": "25vh"}
                     ),
                     dbc.Row(html.Div([html.H1(
@@ -260,7 +257,7 @@ app.layout = html.Div([
                                                 max=1600, ##ここで日付の範囲を変更する
                                                 # 今回の入力値(初期値)
                                                 value=[0, 0],
-                                                className='font-weight-bold form-range'), ###
+                                                className='font-weight-bold form-range'), 
                             ], style={'width': '100%'}
                             ),
 
@@ -274,10 +271,8 @@ app.layout = html.Div([
                     [
                         dbc.Col(
                             [
-                               # html.P('power linegraph'),
                                 dcc.Graph(id='linegraph', figure={})
                             ],
-                            # className='bg-light'
                         )
                     ],
                     style={"width":"100%","height": "55vh"}
@@ -290,9 +285,8 @@ app.layout = html.Div([
                                 html.Div(id='title_text',
                                          style={'fontSize': 20}  # フォントサイズを20に設定
                                 ),
-                                html.Div(id='japan_marker',)#style={'margin-top': '50px', }
-                            ],style={"width":"50%",},#"height": "90vh",
-                            # className='bg-white' 
+                                html.Div(id='japan_marker',)
+                            ],style={"width":"50%",},
                            
                        ),
                          #円で各発電ごとの発電量の比較
@@ -312,7 +306,6 @@ app.layout = html.Div([
                                          style={'width': '120px',
                                              'left': '10px'}
                                          ),
-                            ##セッティングにドロップダウン持っていく
                 
                             ]),
                         
@@ -320,17 +313,15 @@ app.layout = html.Div([
                         
                     ])
                     ],style={"width":"100%"}
-                    # className='bg-white'
                     ),
                 dbc.Row(
                 [   
-#円グラフ全ての会社を表示（選択で見たい会社のみもできる）
+                    #円グラフ全ての会社を表示（選択で見たい会社のみもできる）
                  dbc.Col(
                         [
                             html.P(''),
                             dcc.Graph(id='pie_chart',figure={}),
                         ],
-                        # className='bg-light'
                     )
                 ],
                 style={"width":"100%","height": "90vh",}
@@ -344,14 +335,12 @@ app.layout = html.Div([
                             html.P(''),
                             dcc.Graph(id='bar_chart',figure={}),
                         ],
-                        # className='bg-light'
                     )
                 ],
                style={"width":"100%","height": "100vh",}
                 ),
                         ],style={"width":"100%",}
                         )
-            # className='bg-dark'
     ],label='電力統計', value='tab-2'),
         
         dcc.Tab([ 
@@ -362,20 +351,20 @@ app.layout = html.Div([
                     ), 
             html.Div([html.P(
                 html.Details([html.Summary('電力使用量の折れ線グラフ'),
-                              '特定の期間内での電力消費のトレンドやパターンを把握することができる。',
+                              '特定の期間内での電力消費のトレンドやパターンを把握することができる。効率的な電力利用の改善点を特定することにも役出つ。電力会社の選択やデータ範囲を変えることでデータの推移がよりわかるようになる場合もある。',
                               '', html.Br(),])),
 
                       html.P(html.Details([html.Summary('電力使用量の増減グラフ'),
-                                    '日付期間の選択より、選択した最後の日付から最初の選択日を引いた値が示されている。数値を１つ１つ比較しなくても色と矢印のマークを使うことで、直感的に増減を見ることができる。全国の電力使用量の比較や地域の違いを把握することができる。'])),
+                                    '日付期間の選択より、選択した最後の日付から最初の選択日を引いた値が示されている。数値を１つ１つ比較しなくても色と矢印のマークを使うことで、直感的に増減を見ることができる。全国の電力使用量の比較や地域の違いを把握することができる。データの見方が広がり新しい発見につながる。'])),
 
                       html.P(html.Details([html.Summary('発電電力量割合の円グラフ'),
-                                           '特定の日で各電力会社の発電電力量の割合、発電方式の変化を見ることができる。'])),
+                                           '特定の日で各電力会社の発電電力量の割合、発電別の変化を見ることができる。再生エネルギーの活用促進を図ることができる。'])),
 
                       html.P(html.Details([html.Summary('発電電力量の棒グラフ'),
                                     '円グラフと共に実際の発電電力量を示すことで発電量の具体的な数値を把握することができる。'])),
 
                       html.P(html.Details([html.Summary('エリアごと発電方式別発電量円グラフ'),
-                                    '日本地図にプロットすることで視覚的に発電量を把握できる。'])),
+                                    '日本地図にプロットすることで視覚的に発電量を把握できる。ある１つの発電方式に着目することで日本全体の比較が可能になり、より確かな発電方式の分析ができる。'])),
 
                     html.P(html.Details([html.Summary('電力需給予測のグラフ'),
                                     '発電量と需要量のバランスを視覚化することでピーク時の需要供給の調整や需要制御の重要性を把握できる。'])),
@@ -442,12 +431,11 @@ app.layout = html.Div([
                      html.A(html.B('[vizGPTでカスタマイズ]'), href='https://vizgpt.ai/workspace', target='_blank'),html.Br(),
                      '　vizGPTとは？',html.Br(),'→vizGPTは、GPTモデルの機能を活用してデータの可視化を作成するツールのことである。自然言語のクエリを解釈し、対応する可視化を生成することで、ユーザーがデータを理解し分析することを容易にする。',html.Br(),
                      '以下は、VizGPTの使用方法を示すクイックビデオデモです：',html.Br(),
-                     html.Iframe(src="https://www.youtube.com/embed/a7BW0cYyzwk?list=TLGGaybGDxmkAAkwNDAyMjAyNA", width="832", height="468")
-                 #    <iframe width="832" height="468"  title="VizGPT: Make contextual data visualization with Chat Interface" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     html.Iframe(src="https://www.youtube.com/embed/a7BW0cYyzwk?si=iPEyU4xyjHLwtnWc", width="832", height="468")
             ])
 
              ])
-        ], )#className='bg-dark'
+        ], )
     ], label = 'グラフについて', value = 'tab-3'),
 ]),html.Div(id='tabs-example-content', ),])
 
@@ -870,7 +858,6 @@ def japanmarker(s, n_clicks, value,start_date, end_date):
 
     map.save('compmap.html')
     new = 'compmap.html'
-    #text_output = f'日付期間{end}から  {start}の比較'
     iframe_src = html.Iframe(srcDoc=open(new, 'r').read(), width='100%', height='550')
     return   iframe_src,text_output
 
@@ -1113,7 +1100,7 @@ def piechart(s, n_clicks,corr_pick,value,start_date):
 @ app.callback(Output('kyokyu_marker',  'figure'),
                [Input('slider', 'value'), Input('my-button', 'n_clicks'), Input('pg', 'value'),],  #ドロップダウン選択で動かす
 State('my-cat-picker', 'value'), State('date', 'start_date'))
-def kyokyumarkar(s, n_clicks,
+def kyokyumarker(s, n_clicks,
 power_gene,value,start_date):
     selected_id = dash.callback_context.triggered[0]['prop_id'].split('.')[0]
     
@@ -1163,11 +1150,6 @@ power_gene,value,start_date):
             date = pd.to_datetime(markp[s].astype(str))
             gh = df[(df['DATETIME'] == date[s[0]])]  # 表示する日付抽出
             title2 = markp[s[0]]
-
-
-    #    date = pd.to_datetime(markp[s].astype(str))
-     #   gh = df[(df['DATETIME'] == date[s[0]])]  
-      #  title2 = markp[s[0]]
         
     pg = power_gene
     if pg == '火力':
@@ -1336,9 +1318,7 @@ def barchart(s, n_clicks,corr_pick,value,start_date):
         subplot_titles=['北海道電力','東北電力','中部電力','北陸電力','東京電力',
                         '関西電力', '中国電力', '四国電力', '九州電力','沖縄電力'],
         )
-    label = {'太陽光':'#00CC96',
-        '風力':'#636EFA'}
-
+    
     bar = [{'x':'原子力','c':'#bad6eb'},
                {'x':'火力','c':'#2b7bba'},
                {'x':'水力','c':'#EF553B'},
